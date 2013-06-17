@@ -54,34 +54,24 @@ set(CMAKE_MODULE_PATH ${${kit}_CMAKE_DIRS} ${CMAKE_MODULE_PATH})
 
 # Configure Use${kit}.cmake
 configure_file(
-  ${${kit}_CMAKE_SOURCE_DIR}/Use.cmake.in
+  ${${kit}_CMAKE_SOURCE_DIR}/UseApplication.cmake.in
   ${${kit}_BINARY_DIR}/Use${kit}.cmake
   @ONLY
   )
 
 # Configure External_${kit}.cmake
-if (NOT EXISTS ${${kit}_SUPERBUILD_DIR}/External_${kit}.cmake
-  AND NOT EXISTS ${${kit}_CMAKE_BINARY_DIR}/External_${kit}.cmake)
-  message("Could not find External_${kit}.cmake: creating it from External_Application.cmake")
-
-  configure_file(
-    ${${kit}_CMAKE_SOURCE_DIR}/External_Application.cmake.in
-    ${${kit}_CMAKE_BINARY_DIR}/External_${kit}.cmake
-   @ONLY
-    )
-endif()
+configure_file(
+  ${${kit}_CMAKE_SOURCE_DIR}/External_Application.cmake.in
+  ${${kit}_CMAKE_BINARY_DIR}/Superbuild/External_${kit}.cmake
+  @ONLY
+  )
 
 # Configure External_${kit}Libs.cmake
-if (NOT EXISTS ${${kit}_SUPERBUILD_DIR}/External_${kit}Libs.cmake
-  AND NOT EXISTS ${${kit}_CMAKE_BINARY_DIR}/External_${kit}Libs.cmake)
-  message("Could not find External_${kit}Libs.cmake: creating it from External_Application.cmake")
-
-  configure_file(
-    ${${kit}_CMAKE_SOURCE_DIR}/External_Application.cmake.in
-   ${${kit}_CMAKE_BINARY_DIR}/External_${kit}Libs.cmake
-    @ONLY
-    )
-endif()
+configure_file(
+  ${${kit}_CMAKE_SOURCE_DIR}/External_ApplicationLibs.cmake.in
+ ${${kit}_CMAKE_BINARY_DIR}/Superbuild/External_${kit}Libs.cmake
+  @ONLY
+  )
 
 #-----------------------------------------------------------------------------
 # Testing
@@ -173,8 +163,8 @@ endif()
 # --------------------------------------------------------------------------
 # Configure and install headers
 # --------------------------------------------------------------------------
-include(ConfigureFileMultiple)
-configure_file_multiple(
+include(ConfigureFileMultipleTimes)
+configure_file_multiple_times(
   INPUT_FILE ${${kit}_CMAKE_SOURCE_DIR}/qSlicerAppVersionConfigure.h.in
   OUTPUT_FILE ${CMAKE_CURRENT_BINARY_DIR}/qSlicerAppVersionConfigure.h
   NUMBER_OF_CONFIGURE 2
@@ -187,8 +177,6 @@ set_property(GLOBAL APPEND PROPERTY ${kit}_INCLUDE_DIRS
 # Sub projects
 # --------------------------------------------------------------------------
 include(ExportLibrary)
-
-enable_testing()
 
 set(${kit}_LAUNCHER_EXECUTABLE
     ${CMAKE_CURRENT_BINARY_DIR}/../Slicer-build/${kit})
@@ -219,8 +207,8 @@ endif()
 # --------------------------------------------------------------------------
 # Install project
 # --------------------------------------------------------------------------
-configure_file_multiple(
-  INPUT_FILE ${${kit}_CMAKE_SOURCE_DIR}/Config.cmake.in
+configure_file_multiple_times(
+  INPUT_FILE ${${kit}_CMAKE_SOURCE_DIR}/ApplicationConfig.cmake.in
   OUTPUT_FILE ${CMAKE_CURRENT_BINARY_DIR}/${kit}Config.cmake
   NUMBER_OF_CONFIGURE 2
   )
