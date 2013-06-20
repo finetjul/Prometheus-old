@@ -18,6 +18,7 @@
 
 #add_subdirectory(Scripts)
 set(modules
+  Workflow
   )
 
 set(${APPLICATION_NAME}_MODULES)
