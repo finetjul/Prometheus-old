@@ -52,8 +52,8 @@ if(NOT DEFINED ${proj}_DIR)
     SOURCE_DIR ${CMAKE_BINARY_DIR}/${proj}
     BINARY_DIR ${${proj}_DIR}
     PREFIX ${proj}-prefix
-    GIT_REPOSITORY "git://github.com/vovythevov/TubeTK.git"
-    GIT_TAG "393df122e4a8eb6d609a7a5ffcfe7843b8966a0f"
+    GIT_REPOSITORY "git://github.com/TubeTK/TubeTK.git"
+    GIT_TAG "1c0002f8532fa3232426a827ecced2207f93612b"
     INSTALL_COMMAND ""
     CMAKE_ARGS
       ${CMAKE_OSX_EXTERNAL_PROJECT_ARGS}
@@ -64,27 +64,29 @@ if(NOT DEFINED ${proj}_DIR)
       -DCMAKE_CXX_FLAGS:STRING=${ep_common_cxx_flags}
       -DCMAKE_C_FLAGS:STRING=${ep_common_c_flags}
       -DBUILD_TESTING:BOOL=${BUILD_TESTING}
-      #-DTubeTK_BUILD_SLICER_EXTENSION:BOOL=${TubeTK_BUILD_SLICER_EXTENSION}
-      -DTubeTK_BUILD_SLICER_EXTENSION:BOOL=OFF
-      -DTubeTK_REQUIRED_QT_VERSION:STRING=${QT_VERSION_MAJOR}.${QT_VERSION_MINOR}.${QT_VERSION_PATCH}
-      -DQT_QMAKE_EXECUTABLE:FILEPATH=${QT_QMAKE_EXECUTABLE}
-      -DTubeTK_USE_BOOST:BOOL=OFF
-      -DTubeTK_USE_CTK:BOOL=ON
-      -DTubeTK_USE_QT:BOOL=ON
-      -DTubeTK_USE_VTK:BOOL=ON
-      #-DTubeTK_USE_SUPERBUILD:BOOL=${TubeTK_USE_SUPERBUILD}
+      # Need to build JsonCpp
       -DTubeTK_USE_SUPERBUILD:BOOL=ON
-      #-DSlicer_DIR:STRING=${Slicer_DIR}
-      -DSlicer_DIR:PATH=${CMAKE_BINARY_DIR}/Slicer-build
-      -DUSE_SYSTEM_ITK:BOOL=ON
-      -DITK_DIR:PATH=${CMAKE_BINARY_DIR}/ITKv4-build
-      -DUSE_SYSTEM_VTK:BOOL=ON
-      -DVTK_DIR:PATH=${CMAKE_BINARY_DIR}/VTK-build
-      -DUSE_SYSTEM_CTK:BOOL=ON
-      -DCTK_DIR:PATH=${CMAKE_BINARY_DIR}/CTK-build
+      # TubeTK_Slicer_SOURCE_DIR is used when generating UseTubeTK.cmake
+      -DTubeTK_Slicer_SOURCE_DIR:PATH=${Slicer_SOURCE_DIR}
+      # Slicer is not available yet (no SlicerConfig.cmake generated)
+      -DTubeTK_USE_Slicer:BOOL=OFF
       -DUSE_SYSTEM_SlicerExecutionModel:BOOL=ON
       -DSlicerExecutionModel_DIR:PATH=${CMAKE_BINARY_DIR}/SlicerExecutionModel-build
-      -DTubeTK_BUILD_ALL_MODULES:BOOL=OFF
+      -DUSE_SYSTEM_ITK:BOOL=ON
+      -DITK_DIR:PATH=${ITK_DIR}
+      -DTubeTK_USE_BOOST:BOOL=OFF
+      -DTubeTK_USE_VTK:BOOL=ON
+      -DUSE_SYSTEM_VTK:BOOL=ON
+      -DVTK_DIR:PATH=${VTK_DIR}
+      -DTubeTK_USE_QT:BOOL=ON
+      -DTubeTK_REQUIRED_QT_VERSION:STRING=${QT_VERSION_MAJOR}.${QT_VERSION_MINOR}.${QT_VERSION_PATCH}
+      -DQT_QMAKE_EXECUTABLE:FILEPATH=${QT_QMAKE_EXECUTABLE}
+      -DTubeTK_USE_CTK:BOOL=ON
+      -DUSE_SYSTEM_CTK:BOOL=ON
+      -DCTK_DIR:PATH=${CTK_DIR}
+      # Build only TubeTK lib, not the modules. They will be built by Slicer.
+      -DTubeTK_BUILD_MODULES:BOOL=OFF
+      -DTubeTK_BUILD_SLICER_EXTENSION:BOOL=OFF
     DEPENDS
       ${${proj}_DEPENDENCIES}
     )

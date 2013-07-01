@@ -94,7 +94,7 @@ if(NOT DEFINED ${proj}_DIR)
     BINARY_DIR ${${proj}_DIR}
     PREFIX ${proj}${ep_suffix}
     GIT_REPOSITORY "git://github.com/Slicer/Slicer.git"
-    GIT_TAG "76081669b002a02a6e2fa24795b0f9dbfe9f4faf"
+    GIT_TAG "b002bc2989c1a262804394a740273aedda57b8c2"
     ${${APPLICATION_NAME}_external_update}
     INSTALL_COMMAND ""
     CMAKE_GENERATOR ${gen}
@@ -139,6 +139,7 @@ if(NOT DEFINED ${proj}_DIR)
       -DSlicer_BUILD_EXTENSIONS:BOOL=OFF
       -DSlicer_EXTENSION_SOURCE_DIRS:STRING=${${APPLICATION_NAME}_MODULES_LIST}
       -DSlicer_DIR:PATH=${${proj}_DIR}
+      -DSlicer_PLATFORM_CHECK:BOOL=OFF
     DEPENDS
       ${${proj}_DEPENDENCIES}
     )
